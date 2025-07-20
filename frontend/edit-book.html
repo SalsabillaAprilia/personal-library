@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Book</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <style>
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #f0f4f8 100%);
+      }
+      .btn-primary {
+        background: #95bad5;
+        transition: all 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background: #7893ad;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
+      }
+      .star {
+        color: #d1d5db;
+        transition: color 0.2s ease;
+      }
+      .star.selected,
+      .star:hover,
+      .star.hovered {
+        color: #fbbf24;
+      }
+    </style>
+  </head>
+  <body class="min-h-screen text-gray-800">
+    <div class="max-w-4xl mx-auto py-10 px-6">
+      <div
+        class="bg-white p-6 rounded-lg shadow-md mb-8 flex justify-between items-center"
+      >
+        <h1 class="text-2xl font-bold">Edit Book</h1>
+        <a
+          href="index.html"
+          class="text-sm font-medium text-blue-600 hover:underline ml-2 text-blue-700"
+          >Back to Library</a
+        >
+      </div>
+
+      <form
+        id="editBookForm"
+        enctype="multipart/form-data"
+        class="bg-white p-6 rounded-lg shadow-md grid grid-cols-1 md:grid-cols-2 gap-6"
+      >
+        <div>
+          <label class="block mb-2 font-semibold">Title</label>
+          <input
+            type="text"
+            id="title"
+            class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-blue-300"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-2 font-semibold">Author</label>
+          <input
+            type="text"
+            id="author"
+            class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-blue-300"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-2 font-semibold">Year</label>
+          <input
+            type="number"
+            id="year"
+            class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-blue-300"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-2 font-semibold">Genre</label>
+          <input
+            type="text"
+            id="genre"
+            name="genre"
+            placeholder="e.g. Fantasy, Adventure"
+            class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-blue-300"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-2 font-semibold">Total Pages</label>
+          <input
+            type="number"
+            id="pages"
+            class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-blue-300"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-2 font-semibold">Current Page</label>
+          <input
+            type="number"
+            id="currentPage"
+            class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-blue-300"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-2 font-semibold">Reminder</label>
+          <input
+            type="date"
+            id="reminder"
+            class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-blue-300"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-2 font-semibold">Cover</label>
+          <input
+            type="file"
+            id="cover"
+            accept="image/*"
+            class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-blue-300"
+          />
+        </div>
+
+        <div class="md:col-span-2">
+          <label class="block mb-2 font-semibold">Notes</label>
+          <textarea
+            id="notes"
+            rows="3"
+            class="w-full border border-gray-300 rounded px-3 py-2 focus:ring-blue-300"
+          ></textarea>
+        </div>
+
+        <div class="mb-6">
+          <label class="block text-gray-700 font-semibold mb-2"
+            >My Rating</label
+          >
+          <div class="flex items-center space-x-1" id="star-rating">
+            <span class="star text-2xl cursor-pointer" data-value="1"
+              >&#9733;</span
+            >
+            <span class="star text-2xl cursor-pointer" data-value="2"
+              >&#9733;</span
+            >
+            <span class="star text-2xl cursor-pointer" data-value="3"
+              >&#9733;</span
+            >
+            <span class="star text-2xl cursor-pointer" data-value="4"
+              >&#9733;</span
+            >
+            <span class="star text-2xl cursor-pointer" data-value="5"
+              >&#9733;</span
+            >
+          </div>
+          <!-- Hidden input buat dikirim ke server -->
+          <input type="hidden" name="rating" id="rating" value="0" />
+        </div>
+
+        <div class="md:col-span-2 flex justify-end mt-4">
+          <button
+            type="submit"
+            id="saveBtn"
+            class="btn-primary text-white font-semibold py-2 px-4 rounded shadow"
+          >
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookId = urlParams.get("id");
+        const token = localStorage.getItem("token");
+        if (!bookId || !token) {
+          alert("Invalid access. Please go back.");
+          return;
+        }
+        
+        function capitalize(str) {
+          return str
+            .split(" ")
+            .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+            .join(" ");
+        }
+        const form = document.getElementById("editBookForm");
+        const saveBtn = document.getElementById("saveBtn");
+
+        // Ambil data buku
+        fetch(`http://localhost:3000/books/${bookId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+          .then((res) => {
+            if (!res.ok) throw new Error("Book not found");
+            return res.json();
+          })
+          .then((data) => {
+            document.getElementById("title").value = data.title || "";
+            document.getElementById("author").value = data.author || "";
+            document.getElementById("year").value = data.year || "";
+            document.getElementById("pages").value = data.pages || "";
+            document.getElementById("currentPage").value =
+              data.currentPage || "";
+            document.getElementById("notes").value = data.notes || "";
+            document.getElementById("reminder").value = data.reminder
+              ? data.reminder.split("T")[0]
+              : "";
+            document.getElementById("genre").value = data.genre
+              ? data.genre.map(capitalize).join(", ")
+              : "";
+            document.getElementById("rating").value = data.rating || "";
+            if (data.cover_url) {
+              const coverImg = document.getElementById("coverPreview");
+              if (coverImg) {
+                coverImg.src = data.cover_url;
+                coverImg.classList.remove("hidden");
+              }
+            }
+
+            // Set tampilan awal rating bintang
+            const stars = document.querySelectorAll(".star");
+            const initialRating = parseInt(data.rating || 0);
+            stars.forEach((s, i) => {
+              s.classList.toggle("selected", i < initialRating);
+            });
+          })
+          .catch((err) => {
+            console.error(err);
+            alert("Failed to load book data.");
+          });
+
+        // Klik bintang
+        const stars = document.querySelectorAll(".star");
+        const ratingInput = document.getElementById("rating");
+        stars.forEach((star) => {
+          star.addEventListener("click", () => {
+            const ratingValue = parseInt(star.getAttribute("data-value"));
+            ratingInput.value = ratingValue;
+            stars.forEach((s, i) => {
+              s.classList.toggle("selected", i < ratingValue);
+            });
+          });
+        });
+
+        // Submit form update
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const title = document.getElementById("title").value.trim();
+          const author = document.getElementById("author").value.trim();
+          const year = document.getElementById("year").value;
+          const pages = document.getElementById("pages").value;
+          const currentPage = document.getElementById("currentPage").value;
+          const notes = document.getElementById("notes").value;
+          const reminder = document.getElementById("reminder").value;
+          const genreRaw = document.getElementById("genre").value;
+          const rating = document.getElementById("rating").value;
+          const cover = document.getElementById("cover").files[0];
+          const genre = genreRaw
+            .split(",")
+            .map((g) => g.trim().toLowerCase())
+            .filter((g) => g);
+
+          const formData = new FormData();
+          formData.append("title", title);
+          formData.append("author", author);
+          formData.append("year", year);
+          formData.append("pages", pages);
+          formData.append("currentPage", currentPage);
+          formData.append("notes", notes);
+          formData.append("reminder", reminder);
+          formData.append("rating", rating);
+          formData.append("genre", JSON.stringify(genre));
+          if (cover) formData.append("cover", cover);
+
+          // Spinner ON
+          saveBtn.disabled = true;
+          saveBtn.innerHTML = `Saving <i class="fas fa-spinner fa-spin mr-2"></i>`;
+
+          try {
+            const res = await fetch(`http://localhost:3000/books/${bookId}`, {
+              method: "PUT",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+              body: formData,
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message || "Update failed");
+
+            alert("Book updated successfully!");
+            window.location.href = "index.html";
+          } catch (err) {
+            alert("Error: " + err.message);
+          } finally {
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = `Save Changes`;
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

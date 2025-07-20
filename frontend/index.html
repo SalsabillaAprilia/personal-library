@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Personal Library Dashboard</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #f0f4f8 100%);
+      }
+      .sidebar {
+        background-color: #95bad5;
+      }
+      .btn-primary {
+        background-color: #95bad5;
+        transition: all 0.3s ease;
+      }
+      .btn-primary:hover {
+        background-color: #7893ad;
+        transform: translateY(-2px);
+        box-shadow: 0 7px 14px rgba(0, 0, 0, 0.1);
+      }
+      .card {
+        background-color: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+      }
+      .book-cover-square {
+        width: 100%;
+        padding-bottom: 100%;
+        position: relative;
+        overflow: hidden;
+      }
+      .book-cover-square img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body class="flex">
+    <!-- Sidebar -->
+    <aside class="sidebar w-56 p-6 h-screen text-white sticky top-0 shadow-lg">
+      <h2 class="text-xl font-bold mb-8 flex items-center gap-2">
+        <i class="fas fa-book-reader text-white"></i> My Library
+      </h2>
+      <nav class="space-y-4 text-sm">
+        <a href="index.html" class="flex items-center gap-2 hover:underline"
+          ><i class="fas fa-home"></i> Home</a
+        >
+        <a href="my-shelf.html" class="flex items-center gap-2 hover:underline"
+          ><i class="fas fa-book"></i> My Shelf</a
+        >
+        <a href="add-book.html" class="flex items-center gap-2 hover:underline"
+          ><i class="fas fa-plus"></i> Add Book</a
+        >
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 px-6 py-8 max-w-6xl mx-auto">
+      <!-- Search + Filter + User -->
+      <div class="flex flex-wrap justify-between items-center gap-4 mb-6">
+        <div class="relative w-full max-w-md">
+          <i
+            class="fas fa-search absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+          ></i>
+          <input
+            type="text"
+            placeholder="Search..."
+            class="pl-10 pr-4 py-2 w-full rounded-md border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-200"
+          />
+        </div>
+
+        <div class="flex items-center gap-4">
+          <div class="relative">
+            <select
+              class="appearance-none border border-gray-300 rounded-md pl-3 pr-8 py-2 text-sm shadow-sm focus:ring-blue-200 focus:ring-2"
+            >
+              <option value="">All Types</option>
+              <option value="fisik">Fisik</option>
+              <option value="ebook">E-Book</option>
+            </select>
+            <div
+              class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-400"
+            >
+              <i class="fas fa-chevron-down text-xs"></i>
+            </div>
+          </div>
+
+          <div class="relative">
+            <select
+              class="appearance-none border border-gray-300 rounded-md pl-3 pr-8 py-2 text-sm shadow-sm focus:ring-blue-200 focus:ring-2"
+            >
+              <option value="">All Status</option>
+              <option value="Unread">Unread</option>
+              <option value="Reading">Reading</option>
+              <option value="Finished">Finished</option>
+            </select>
+            <div
+              class="pointer-events-none absolute inset-y-0 right-2 flex items-center text-gray-400"
+            >
+              <i class="fas fa-chevron-down text-xs"></i>
+            </div>
+          </div>
+
+          <div class="relative" id="user-menu-wrapper">
+            <button
+              id="userMenuButton"
+              class="w-10 h-10 flex items-center justify-center bg-primary text-white rounded shadow"
+            >
+              <i class="fas fa-user"></i>
+            </button>
+            <!-- Dropdown menu -->
+            <div
+              id="userMenu"
+              class="hidden absolute right-0 mt-2 w-36 bg-white border rounded-md shadow-lg py-2 z-50"
+            >
+              <a
+                href="#"
+                class="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                <i class="fas fa-user-circle"></i> Profile
+              </a>
+              <button
+                onclick="logout()"
+                class="w-full text-left flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                <i class="fas fa-sign-out-alt"></i> Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero -->
+      <div class="card p-6 mb-6">
+        <h2 id="greeting" class="text-xl font-bold mb-2">Hello!</h2>
+        <p class="italic text-gray-600">
+          “There is more treasure in books than in all the pirate’s loot on
+          Treasure Island.” – Walt Disney
+        </p>
+      </div>
+
+      <!-- Book Section -->
+      <h2 class="text-2xl font-bold mb-4 text-gray-800">My Books</h2>
+      <div
+        id="books-grid"
+        class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4"
+      ></div>
+      <div id="loading-spinner" class="text-center py-10 text-gray-500 hidden">
+        <i class="fas fa-spinner fa-spin text-2xl"></i>
+        <p>Loading your books...</p>
+      </div>
+
+      <div id="no-books-message" class="hidden text-center py-10 text-gray-600">
+        <p class="text-lg mb-4">
+          Looks like your library is empty. Start by adding some books.
+        </p>
+        <a
+          href="add-book.html"
+          class="btn-primary text-white font-semibold py-2 px-4 rounded shadow-md"
+        >
+          Add Book
+        </a>
+      </div>
+
+      <!-- Detail Modal -->
+      <div
+        id="bookDetailModal"
+        class="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center hidden"
+      >
+        <div
+          class="bg-white w-full max-w-2xl rounded-lg overflow-hidden shadow-lg flex flex-col md:flex-row p-6 relative"
+        >
+          <!-- Close Button -->
+          <button
+            onclick="closeBookModal()"
+            class="absolute top-1 right-3 text-gray-600 hover:text-gray-800 text-xl"
+          >
+            &times;
+          </button>
+
+          <!-- Left Side (Cover & Title) -->
+          <div
+            class="md:w-1/2 mb-4 md:mb-0 flex flex-col items-center text-center"
+          >
+            <img
+              id="detailCover"
+              src=""
+              alt="Cover"
+              class="w-40 h-60 object-cover rounded-md shadow mb-2"
+            />
+            <h2 id="detailTitle" class="text-lg font-bold"></h2>
+            <p id="detailYear" class="text-gray-500 text-sm"></p>
+          </div>
+
+          <!-- Right Side (Detail Info) -->
+          <div
+            class="md:w-1/2 md:pl-6 text-sm text-gray-700 overflow-y-auto max-h-60"
+          >
+            <p><strong>Author:</strong> <span id="detailAuthor"></span></p>
+            <p><strong>Genre:</strong> <span id="detailGenre"></span></p>
+            <p><strong>Pages:</strong> <span id="detailPages"></span></p>
+            <p>
+              <strong>Current Page:</strong>
+              <span id="detailCurrentPage"></span>
+            </p>
+            <p><strong>Status:</strong> <span id="detailStatus"></span></p>
+            <p><strong>Rating:</strong> <span id="detailRating"></span></p>
+            <p><strong>Reminder:</strong> <span id="detailReminder"></span></p>
+            <p><strong>Notes:</strong> <span id="detailNotes"></span></p>
+
+            <button
+              id="deleteBookBtn"
+              class="mt-4 text-sm text-red-600 hover:underline"
+            >
+              <i class="fas fa-trash-alt"></i> Delete Book
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Script -->
+    <script>
+      function logout() {
+        if (confirm("Are you sure you want to logout?")) {
+          localStorage.removeItem("token");
+          localStorage.removeItem("username");
+          window.location.replace("/login.html");
+        }
+      }
+
+      function editBook(id) {
+        window.location.href = `edit-book.html?id=${id}`;
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          window.location.replace("/login.html");
+          return;
+        }
+
+        function getGreeting() {
+          const username = localStorage.getItem("username") || "there";
+          const hour = new Date().getHours();
+          if (hour < 12) return `Good Morning, ${username}!`;
+          else if (hour < 18) return `Good Afternoon, ${username}!`;
+          else return `Good Evening, ${username}!`;
+        }
+
+        const greetingEl = document.getElementById("greeting");
+        if (greetingEl) {
+          greetingEl.textContent = getGreeting();
+        }
+
+        const booksGrid = document.getElementById("books-grid");
+        const noBooksMessage = document.getElementById("no-books-message");
+        const API_URL = "http://localhost:3000/books";
+
+        async function fetchBooks() {
+          const spinner = document.getElementById("loading-spinner");
+          spinner.classList.remove("hidden");
+          try {
+            const res = await fetch(API_URL, {
+              headers: { Authorization: "Bearer " + token },
+            });
+            if (!res.ok) throw new Error("Fetch failed");
+            const books = await res.json();
+
+            booksGrid.innerHTML = "";
+            if (books.length === 0) {
+              noBooksMessage.classList.remove("hidden");
+              booksGrid.classList.add("hidden");
+            } else {
+              noBooksMessage.classList.add("hidden");
+              booksGrid.classList.remove("hidden");
+              books.forEach((book) => {
+                const card = document.createElement("div");
+                card.setAttribute("data-id", book._id);
+                card.className =
+                  "card p-2 w-[180px] bg-white rounded-lg shadow flex flex-col text-sm";
+
+                const statusClass =
+                  book.status === "Finished"
+                    ? "text-emerald-600 border-emerald-400"
+                    : book.status === "Reading"
+                    ? "text-sky-600 border-sky-400"
+                    : "text-yellow-600 border-yellow-400";
+                const progress = book.pages
+                  ? Math.min(
+                      100,
+                      Math.round((book.currentPage / book.pages) * 100)
+                    )
+                  : 0;
+                card.innerHTML = `
+              <div class="book-cover-square mb-2">
+                  <img src="${
+                    book.cover_url || "https://via.placeholder.com/150"
+                  }" alt="${
+                  book.title
+                }" class="rounded-md object-cover w-full h-32" />
+              </div>
+              <h3 class="font-semibold text-gray-800 text-sm truncate">${
+                book.title
+              }</h3>
+              <p class="text-gray-500 text-xs mb-1 truncate">${book.author}</p>
+              <div class="flex justify-between items-center mt-2">
+                  <span class="inline-block w-1/2 text-center px-2 py-0.5 text-xs font-semibold rounded-full border ${statusClass}">${
+                  book.status
+                }</span>
+                 <div class="flex gap-2">
+                    <button onclick="editBook('${
+                      book._id
+                    }')" class="text-xs text-blue-500 hover:text-blue-700">
+                      <i class="fas fa-pen"></i>
+                    </button>
+                    <button onclick="fetchBookDetail('${
+                      book._id
+                    }')" class="text-xs text-indigo-500 hover:text-indigo-700">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="w-full bg-gray-200 h-2 rounded-full mt-2">
+                  <div class="bg-emerald-500 h-2 rounded-full" style="width: ${progress}%;"></div>
+              </div>
+              <p class="text-xs text-gray-600 mt-1">${progress}%</p>
+            `;
+                booksGrid.appendChild(card);
+              });
+            }
+          } catch (err) {
+            console.error(err);
+            booksGrid.innerHTML = `<p class="text-red-500 text-center">Failed to load books.</p>`;
+          } finally {
+            spinner.classList.add("hidden");
+          }
+        }
+
+        async function deleteBook(id) {
+          if (!confirm("Delete this book?")) return;
+          const btn =
+            document.querySelector(`button[data-delete-id="${id}"]`) ||
+            document.getElementById("deleteBookBtn");
+          if (btn) {
+            btn.innerHTML = `Deleting <i class="fas fa-spinner fa-spin"></i>`;
+            btn.disabled = true;
+          }
+          try {
+            const res = await fetch(`${API_URL}/${id}`, {
+              method: "DELETE",
+              headers: { Authorization: "Bearer " + token },
+            });
+            if (!res.ok) throw new Error("Delete failed");
+            const card = document.querySelector(`[data-id="${id}"]`);
+            if (card) card.remove();
+            closeBookModal();
+            await fetchBooks();
+          } catch (err) {
+            alert("Failed to delete.");
+          }
+        }
+        const deleteBtn = document.getElementById("deleteBookBtn");
+        if (deleteBtn) {
+          deleteBtn.addEventListener("click", () => {
+            if (currentDetailId) deleteBook(currentDetailId);
+          });
+        }
+
+        fetchBooks();
+
+        const menuBtn = document.getElementById("userMenuButton");
+        const menu = document.getElementById("userMenu");
+
+        menuBtn.addEventListener("click", () => {
+          menu.classList.toggle("hidden");
+        });
+
+        document.addEventListener("click", (e) => {
+          const wrapper = document.getElementById("user-menu-wrapper");
+          if (!wrapper.contains(e.target)) {
+            menu.classList.add("hidden");
+          }
+        });
+      });
+
+      let currentDetailId = null;
+
+      function capitalize(str) {
+        return str
+          .split(" ")
+          .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+          .join(" ");
+      }
+
+      async function fetchBookDetail(id) {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        try {
+          const res = await fetch(`http://localhost:3000/books/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (!res.ok) throw new Error("Failed to fetch detail");
+          const book = await res.json();
+
+          currentDetailId = book._id;
+          document
+            .getElementById("deleteBookBtn")
+            .setAttribute("data-delete-id", book._id);
+
+          document.getElementById("detailCover").src =
+            book.cover_url || "https://via.placeholder.com/150";
+          document.getElementById("detailTitle").textContent = book.title || "";
+          document.getElementById("detailYear").textContent = book.year || "-";
+          document.getElementById("detailAuthor").textContent =
+            book.author || "-";
+          document.getElementById("detailGenre").textContent =
+            book.genre?.map(capitalize).join(", ") || "-";
+          document.getElementById("detailPages").textContent =
+            book.pages || "-";
+          document.getElementById("detailCurrentPage").textContent =
+            book.currentPage || "0";
+          document.getElementById("detailStatus").textContent =
+            book.status || "-";
+          document.getElementById("detailRating").textContent = book.rating
+            ? `${book.rating}/5`
+            : "-";
+          document.getElementById("detailReminder").textContent = book.reminder
+            ? new Date(book.reminder).toLocaleDateString()
+            : "-";
+          document.getElementById("detailNotes").textContent =
+            book.notes || "-";
+          document.getElementById("bookDetailModal").classList.remove("hidden");
+        } catch (err) {
+          alert("Failed to load book detail.");
+        }
+      }
+
+      function closeBookModal() {
+        document.getElementById("bookDetailModal").classList.add("hidden");
+        currentDetailId = null;
+      }
+    </script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: "#95bad5",
+              secondary: "#f5f7fa",
+            },
+          },
+        },
+      };
+    </script>
+  </body>
+</html>

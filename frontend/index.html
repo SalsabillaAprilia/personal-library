@@ -275,7 +275,7 @@
 
         const booksGrid = document.getElementById("books-grid");
         const noBooksMessage = document.getElementById("no-books-message");
-        const API_URL = "http://localhost:3000/books";
+        const API_URL = "https://personal-library-production-3383.up.railway.app/books";
 
         async function fetchBooks() {
           const spinner = document.getElementById("loading-spinner");
@@ -419,7 +419,7 @@
         if (!token) return;
 
         try {
-          const res = await fetch(`http://localhost:3000/books/${id}`, {
+          const res = await fetch(`https://personal-library-production-3383.up.railway.app/books/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

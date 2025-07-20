@@ -157,7 +157,7 @@
           addBtn.innerHTML = `Adding <i class="fas fa-spinner fa-spin mr-2"></i>`;
 
           try {
-            const res = await fetch("http://localhost:3000/books", {
+            const res = await fetch("https://personal-library-production-3383.up.railway.app/books", {
               method: "POST",
               headers: {
                 Authorization: "Bearer " + token,

@@ -197,7 +197,7 @@
         const saveBtn = document.getElementById("saveBtn");
 
         // Ambil data buku
-        fetch(`http://localhost:3000/books/${bookId}`, {
+        fetch(`https://personal-library-production-3383.up.railway.app/books/${bookId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -290,7 +290,7 @@
           saveBtn.innerHTML = `Saving <i class="fas fa-spinner fa-spin mr-2"></i>`;
 
           try {
-            const res = await fetch(`http://localhost:3000/books/${bookId}`, {
+            const res = await fetch(`https://personal-library-production-3383.up.railway.app/books/${bookId}`, {
               method: "PUT",
               headers: {
                 Authorization: `Bearer ${token}`,

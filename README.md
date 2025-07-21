@@ -21,7 +21,7 @@ Seluruh sistem dikembangkan dari awal dengan membagi struktur kerja menjadi fron
 - Hapus buku dari koleksi
 - Filter berdasarkan status (Unread, Reading, Finished)
 - Modal detail buku
-- Share list bacaan
+- Share list bacaan (masih dalam pengembangan)
 - Form edit mendukung multiple genre
 
 
@@ -58,8 +58,7 @@ Seluruh sistem dikembangkan dari awal dengan membagi struktur kerja menjadi fron
 
 ## Deployment
 
-Belum dilakukan. Sistem dijalankan secara lokal selama pengembangan dan testing.
-
+(https://superlative-griffin-405691.netlify.app/login.html)
 
 ## Peran IBM Granite dalam Proyek
 Pada tahap awal pengembangan backend, saya memanfaatkan IBM Granite, sebuah model AI dari IBM yang unggul dalam pemahaman kode dan struktur proyek. Granite sangat membantu saya dalam:

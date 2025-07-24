@@ -77,37 +77,34 @@
     </aside>
 
     <!-- Main Content -->
-    <main class="flex-1 px-6 py-8 max-w-7xl mx-auto">
-      <h1 class="text-2xl font-bold mb-6">My Shelf</h1>
+    <main class="flex-1 p-6">
+      <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl font-bold text-emerald-800">My Shelf</h1>
+        <button
+          class="bg-emerald-500 text-white px-4 py-2 rounded hover:bg-emerald-600 transition"
+          onclick="openCreateShelfModal()"
+        >
+          + Create Shelf
+        </button>
+      </div>
+
+      <!-- Empty State -->
+      <div class="text-center mt-24">
+        <img
+          src="https://www.svgrepo.com/show/513743/empty-box.svg"
+          alt="Empty"
+          class="w-32 mx-auto mb-6 opacity-60"
+        />
+        <p class="text-gray-600 text-lg">You haven't created any shelf yet.</p>
+        <p class="text-gray-500">
+          Start by clicking the "Create Shelf" button above.
+        </p>
+      </div>
 
       <div class="space-y-10">
-        <!-- Rack Start -->
-        <div>
-          <h2 class="text-lg font-semibold mb-2">Currently Reading</h2>
-          <div class="rack-container flex gap-4 pb-2">
-            <!-- Example Book Card -->
-            <div class="card">
-              <div class="book-cover-square">
-                <img src="https://via.placeholder.com/150" alt="Book Cover" />
-              </div>
-              <div class="p-2 text-sm">
-                <h3 class="font-semibold truncate">Book Title</h3>
-                <p class="text-gray-500 truncate">Author Name</p>
-              </div>
-            </div>
             <!-- More book cards here via JS -->
           </div>
         </div>
-
-        <!-- Rack with Empty State -->
-        <div>
-          <h2 class="text-lg font-semibold mb-2">Finished</h2>
-          <div class="rack-container flex gap-4 pb-2">
-            <!-- If empty -->
-            <p class="text-gray-400 italic">No books in this shelf yet.</p>
-          </div>
-        </div>
-
         <!-- You can add more racks like 'Want to Read', 'E-book', 'Fisik', etc -->
       </div>
     </main>

@@ -46,11 +46,11 @@ Seluruh sistem dikembangkan dari awal dengan membagi struktur kerja menjadi fron
 1. Clone repository ini
 2. Install dependencies di folder backend
 3. Buat file `.env` di folder backend dengan variabel:
-   MONGO_URI=
-   CLOUDINARY_CLOUD_NAME=
-   CLOUDINARY_API_KEY=
-   CLOUDINARY_API_SECRET=
-   JWT_SECRET=
+- MONGO_URI=
+- CLOUDINARY_CLOUD_NAME=
+- CLOUDINARY_API_KEY=
+- CLOUDINARY_API_SECRET=
+- JWT_SECRET=
 4. Jalankan backend: `node server.js`
 5. Jalankan frontend di browser dengan membuka `login.html`
 
@@ -65,6 +65,7 @@ Seluruh sistem dikembangkan dari awal dengan membagi struktur kerja menjadi fron
 Pada tahap awal pengembangan backend, saya memanfaatkan IBM Granite, sebuah model AI dari IBM yang unggul dalam pemahaman kode dan struktur proyek. Granite sangat membantu saya dalam:
 1. Menentukan struktur folder backend yang rapi dan modular
 2. Membuat draft awal file seperti route, controller, dan model
-3. Memberikan saran teknis yang relevan dan sesuai praktik industri
+3. Memberikan saran teknis yang relevan dan sesuai praktik industri.
+
 Setelah struktur dasar terbentuk dengan bantuan Granite, proses pengembangan dilanjutkan sepenuhnya secara manual. Saya menyusun logika backend, koneksi database, middleware autentikasi, hingga integrasi penyimpanan gambar ke Cloudinary secara mandiri.
 Dukungan Granite pada fase awal ini memberikan landasan yang kokoh dan mempercepat orientasi saya dalam membangun backend berbasis Node.js dan MongoDB.

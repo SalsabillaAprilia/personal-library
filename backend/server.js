@@ -13,10 +13,6 @@ app.use(cors({
   origin: "https://superlative-griffin-405691.netlify.app",
   credentials: true
 }));
-app.options("*", cors({
-  origin: "https://superlative-griffin-405691.netlify.app",
-  credentials: true
-}));
 app.use(express.json());
 
 // Routes

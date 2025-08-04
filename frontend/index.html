@@ -275,7 +275,7 @@
 
         const booksGrid = document.getElementById("books-grid");
         const noBooksMessage = document.getElementById("no-books-message");
-        const API_URL = "https://ten-bats-jump.loca.lt/books";
+        const API_URL = "https://witty-socks-care.loca.lt/books";
 
         async function fetchBooks() {
           const spinner = document.getElementById("loading-spinner");
@@ -419,7 +419,7 @@
         if (!token) return;
 
         try {
-          const res = await fetch(`https://ten-bats-jump.loca.lt/books/${id}`, {
+          const res = await fetch(`https://witty-socks-care.loca.lt/books/${id}`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

@@ -69,7 +69,7 @@
                 e.preventDefault();
                 setError('');
                 if (validate()) {
-                    fetch('https://31182fc4ad86.ngrok-free.app/api/auth/login', {
+                    fetch('https://ten-bats-jump.loca.lt/api/auth/login', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email, password })
@@ -165,7 +165,7 @@
             const handleSubmit = (e) => {
                 e.preventDefault();
                 if (validate()) {
-                    fetch('https://31182fc4ad86.ngrok-free.app/api/auth/register', {
+                    fetch('https://ten-bats-jump.loca.lt/api/auth/register', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ username, email, password })

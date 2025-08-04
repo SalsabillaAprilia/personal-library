@@ -197,7 +197,7 @@
         const saveBtn = document.getElementById("saveBtn");
 
         // Ambil data buku
-        fetch(`https://31182fc4ad86.ngrok-free.app/books/${bookId}`, {
+        fetch(`https://ten-bats-jump.loca.lt/books/${bookId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -290,7 +290,7 @@
           saveBtn.innerHTML = `Saving <i class="fas fa-spinner fa-spin mr-2"></i>`;
 
           try {
-            const res = await fetch(`https://31182fc4ad86.ngrok-free.app/books/${bookId}`, {
+            const res = await fetch(`https://ten-bats-jump.loca.lt/books/${bookId}`, {
               method: "PUT",
               headers: {
                 Authorization: `Bearer ${token}`,
